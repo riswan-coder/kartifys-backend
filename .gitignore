@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+media/
+staticfiles/
+*.log
+.DS_Store
+dashboard/
+mobile/
+shop_logos/
+products/*.png
+products/*.jpg
