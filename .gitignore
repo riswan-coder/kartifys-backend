@@ -4,7 +4,6 @@ __pycache__/
 *.pyo
 .env
 media/
-staticfiles/
 *.log
 .DS_Store
 dashboard/
