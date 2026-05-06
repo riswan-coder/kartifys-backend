@@ -1,0 +1,1 @@
+web: gunicorn easyfind.wsgi --log-file -
