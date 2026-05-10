@@ -2,7 +2,6 @@ from pathlib import Path
 from decouple import config
 from datetime import timedelta
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +10,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-187afd.up.railway.app',
+    'https://web-production-187afd.up.railway.app',  # old
+    'https://kartifys-backend-production.up.railway.app',  # ← add this
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,25 +65,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'easyfind.wsgi.application'
 
+import dj_database_url
 
 DATABASE_URL = config('DATABASE_URL', default=None)
-
+# AFTER (fixed)
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
+    # Local development database
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
+            'NAME': config('DB_NAME', default='easyfind_db'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
+            'HOST': config('DB_HOST', default='localhost'),
             'PORT': config('DB_PORT', default='5432'),
         }
     }
-
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
